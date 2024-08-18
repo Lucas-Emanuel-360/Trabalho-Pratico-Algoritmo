@@ -373,8 +373,8 @@ int executarExperimento(){
   long int *vetQlqr = NULL;
   int tamQlqr, tamR = 0; //colocar loop até EOF e ir incrementando
   int posicaoBloco = 3;
-  char linha;
-  
+  char linha[200];
+
   printf("\nCadastro de experimento\n\n");
 
   cadastro = cadastrarExperimento();
@@ -393,11 +393,12 @@ int executarExperimento(){
     vet = pegaVetor(1, &tam1);
     vet = converteDecimal(vet, &tam1, e.tamAlvo);
     quickSort(vet, 0, tam1-1);
-    printf("\nVetor quick sortado\n-> ");
-    for(int i = 0; i < tam1; i++)
-      {
-        printf("%ld ", vet[i]);
-      }
+
+    // printf("\nVetor quick sortado\n-> ");
+    // for(int i = 0; i < tam1; i++)
+    //   {
+    //     printf("%ld ", vet[i]);
+    //   }
 
 
     vet2 = pegaVetor(2, &tam2);
@@ -405,34 +406,40 @@ int executarExperimento(){
     quickSort(vet2, 0, tam2-1);
 
     resultado = comparaVetor(vet, tam1, vet2, tam2, resultado, &tamR);
-    printf("\nTamR = %d\n", tamR);
-    
-    for (int i = 0; i < tamR; i++){
-      printf("\nBase: %ld, Qtd: %d\n", resultado[i].base, resultado[i].qtd);
-    }
-    
+    // printf("\nTamR = %d\n", tamR);
+
+    // for (int i = 0; i < tamR; i++){
+    //   printf("\nBase: %ld, Qtd: %d\n", resultado[i].base, resultado[i].qtd);
+    // }
+
     int bloco = 0;
     posicaoBloco = 1;
-    while(fscanf(fileAME, " %[^\n]", &linha) != EOF){
+    fseek(fileAME, 0, SEEK_SET);
+    while(fscanf(fileAME, " %[^\n]", linha) != EOF){
+
       printf("\n\nestou no while, posicaobloco = %d\n\n", posicaoBloco);
       printf("\n\n");
-      if(linha != '>' && bloco == 0){
-        vetQlqr = pegaVetor(posicaoBloco, &tamQlqr);
-        vetQlqr = converteDecimal(vetQlqr, &tamQlqr, e.tamAlvo);
-        quickSort(vetQlqr, 0, tamQlqr-1);
 
-        for (int i = 0; i < tamR; i++) {
-          // Para cada elemento do vetor1, faz busca binária no vetor2
-          if (buscaBinaria(vetQlqr, tamQlqr, resultado[i].base) != -1) {
-            resultado[i].qtd += 1;
+      if((linha[0] == '0' || linha[0] == '1' || linha[0] == '2' || linha[0] == '3') && (bloco == 0)){
+        if(posicaoBloco > 2)
+        {
+          vetQlqr = pegaVetor(posicaoBloco, &tamQlqr);
+          vetQlqr = converteDecimal(vetQlqr, &tamQlqr, e.tamAlvo);
+          quickSort(vetQlqr, 0, tamQlqr-1);
+
+          for (int i = 0; i < tamR; i++) {
+            // Para cada elemento do vetor1, faz busca binária no vetor2
+            if (buscaBinaria(vetQlqr, tamQlqr, resultado[i].base) != -1) {
+              resultado[i].qtd += 1;
+            }
           }
+          bloco = 1;
+          printf("\n\nepassei do for, posicaobloco = %d\n\n", posicaoBloco);
         }
-        bloco = 1;
-        printf("\n\nepassei do for, posicaobloco = %d\n\n", posicaoBloco);
         posicaoBloco++;
       }
-      
-      if(linha == '>' && bloco == 1)
+
+      if((linha[0] != '0' && linha[0] != '1' && linha[0] != '2' && linha[0] != '3') && (bloco == 1))
       {
         bloco = 0;
       }
@@ -563,8 +570,6 @@ long int * pegaVetor(int posicao, int *tv)
   return blocoEscolhido; //retorna o vetor pronto
 }
 
-
-
 // tem q pegar de x em x bloquinhos e colocar em base 10
 long int * converteDecimal(long int *vetor, int *tamVet, int tamAlvo)
 {
@@ -573,13 +578,15 @@ long int * converteDecimal(long int *vetor, int *tamVet, int tamAlvo)
 
   convertendo = (long int *)calloc(*tamVet, sizeof(long int));
 
-  for(int i = 0, j = 0; i < *tamVet; i++){
+  for(int i = 0, j = 0; i < (*tamVet - tamAlvo) + 1; i++){
     valor = 0;
-
     for (int j = 0, k = tamAlvo - 1; j < tamAlvo; j++, k--){
       valor += vetor[i + j] * pow(4, k);
     }
-
+  //               8 9                             
+  // 1 1 1 0 0 0 3 3 1 1 1 -> 11
+  //3 -> 9 //4 -> 8
+                                                  
     // a = vetor[i] * pow(4, 3);
     // b = vetor[i + 1] * pow(4, 2);
     // c = vetor[i + 2] * pow(4, 1);
@@ -596,11 +603,11 @@ long int * converteDecimal(long int *vetor, int *tamVet, int tamAlvo)
   }
    *tamVet = count;
 
-  printf("\nVetor convert\n-> ");
-  for(int i = 0; i < count; i++)
-    {
-      printf("%ld ", convertendo[i]);
-    }
+  // printf("\nVetor convert\n-> ");
+  // for(int i = 0; i < count; i++)
+  //   {
+  //     printf("%ld ", convertendo[i]);
+  //   }
 
   return convertendo;
 }
