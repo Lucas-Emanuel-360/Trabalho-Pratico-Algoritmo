@@ -19,7 +19,7 @@ char resultado[100]; // se achou ou não e qual sequência
 }Experimento;
 
 typedef struct{
-  int base;
+  long int base;
   int qtd;
 } Resultado;
 
@@ -45,11 +45,11 @@ int cadastrarExperimento(); //fer
 int executarExperimento(); // todos nozes
 
 //Parte Dificil
-int * pegaVetor(int posicao, int *tv); //wal linda ;) // agora é fefu >:) peguei
-int * converteDecimal(int *vetor, int *tamVet, int tamAlvo); // fefefefefe // agora é wal
-void quickSort(int *v, int inicio, int fim); // Lusca // continua Lusca
-Resultado * comparaVetor(int *vet1, int tam1, int *vet2, int tam2, Resultado *resultado, int *tamR); //wal
-int buscaBinaria(int *vet, int tamVet, int valor);
+long int * pegaVetor(int posicao, int *tv); //wal linda ;) // agora é fefu >:) peguei
+long int * converteDecimal(long int *vetor, int *tamVet, int tamAlvo); // fefefefefe // agora é wal
+void quickSort(long int *v, int inicio, int fim); // Lusca // continua Lusca
+Resultado * comparaVetor(long int *vet1, int tam1, long int *vet2, int tam2, Resultado *resultado, int *tamR); //wal
+int buscaBinaria(long int *vet, int tamVet, int valor);
 void converteParaString(Resultado r, int tamAlvo);
 void listarExperimentos(); // lucas
 void gerarRelatorio();// Lucas
@@ -368,8 +368,10 @@ int executarExperimento(){
   int cadastro;
   Experimento e;
   Resultado *resultado = NULL;
-  int *vet = NULL, *vet2 = NULL,  tam1, tam2;
-  int *vetQlqr = NULL, tamQlqr, tamR = 0; //colocar loop até EOF e ir incrementando
+  long int *vet = NULL, *vet2 = NULL;
+  int tam1, tam2;
+  long int *vetQlqr = NULL;
+  int tamQlqr, tamR = 0; //colocar loop até EOF e ir incrementando
   int posicaoBloco = 3;
   char linha;
   
@@ -394,7 +396,7 @@ int executarExperimento(){
     printf("\nVetor quick sortado\n-> ");
     for(int i = 0; i < tam1; i++)
       {
-        printf("%d ", vet[i]);
+        printf("%ld ", vet[i]);
       }
 
 
@@ -406,7 +408,7 @@ int executarExperimento(){
     printf("\nTamR = %d\n", tamR);
     
     for (int i = 0; i < tamR; i++){
-      printf("\nBase: %d, Qtd: %d\n", resultado[i].base, resultado[i].qtd);
+      printf("\nBase: %ld, Qtd: %d\n", resultado[i].base, resultado[i].qtd);
     }
     
     int bloco = 0;
@@ -437,7 +439,7 @@ int executarExperimento(){
     }
     //testando
     for (int i = 0; i < tamR; i++){
-      printf("\n\nBase: %d, Qtd: %d\n\n", resultado[i].base, resultado[i].qtd);
+      printf("\n\nBase: %ld, Qtd: %d\n\n", resultado[i].base, resultado[i].qtd);
     }
     // e.resultado = "Achou " + resultado->base;
   }
@@ -453,7 +455,7 @@ int executarExperimento(){
 
 
 
-int * pegaVetor(int posicao, int *tv)
+long int * pegaVetor(int posicao, int *tv)
 {
   char linha[200]; //linha sendo observada
   int atual = 0; //para saber em qual bloco de sequência o código está
@@ -541,8 +543,8 @@ int * pegaVetor(int posicao, int *tv)
       }
     }
 
-  int * blocoEscolhido; //vetor para armazenar, em ints, o bloco escolhido
-  blocoEscolhido = (int *)calloc(tam, sizeof(int)); //aloca o tamanho para o vetor
+  long int * blocoEscolhido; //vetor para armazenar, em ints, o bloco escolhido
+  blocoEscolhido = (long int *)calloc(tam, sizeof(long int)); //aloca o tamanho para o vetor
 
   for(int i = 0; i < tam; i++)
     {
@@ -554,7 +556,7 @@ int * pegaVetor(int posicao, int *tv)
   printf("\nVetor buscado\n-> ");
   for(int i = 0; i < tam; i++)
     {
-      printf("%d ", blocoEscolhido[i]);
+      printf("%ld ", blocoEscolhido[i]);
     }
   
   *tv = tam; //passa o tamanho do vetor pra varivel fora da função passada por referencia
@@ -564,11 +566,12 @@ int * pegaVetor(int posicao, int *tv)
 
 
 // tem q pegar de x em x bloquinhos e colocar em base 10
-int * converteDecimal(int *vetor, int *tamVet, int tamAlvo)
+long int * converteDecimal(long int *vetor, int *tamVet, int tamAlvo)
 {
-  int * convertendo = NULL, count = 0, valor;
+  long int * convertendo = NULL, valor;
+  int count = 0;
 
-  convertendo = (int *)calloc(*tamVet, sizeof(int));
+  convertendo = (long int *)calloc(*tamVet, sizeof(long int));
 
   for(int i = 0, j = 0; i < *tamVet; i++){
     valor = 0;
@@ -596,13 +599,13 @@ int * converteDecimal(int *vetor, int *tamVet, int tamAlvo)
   printf("\nVetor convert\n-> ");
   for(int i = 0; i < count; i++)
     {
-      printf("%d ", convertendo[i]);
+      printf("%ld ", convertendo[i]);
     }
 
   return convertendo;
 }
 
-void quickSort(int *v, int inicio, int fim) {
+void quickSort(long int *v, int inicio, int fim) {
   // quickSort(vetorConvertido, 0, tamConvertendo - 1); <- chamada de exemplo para a função
   
   // Verifica se a posição inicial é menor que a posição final
@@ -653,8 +656,8 @@ void quickSort(int *v, int inicio, int fim) {
   }
 }
 
-Resultado * comparaVetor(int *vet1, int tam1, int *vet2, int tam2, Resultado *resultado, int *tamR){
-  // ela ta ali falando e eu aqui em enteder nada
+Resultado * comparaVetor(long int *vet1, int tam1,long int *vet2, int tam2, Resultado *resultado, int *tamR){
+  
   int size = 200, achou = 0;
   Resultado *result = (Resultado *)malloc(size * sizeof(Resultado)), r;
 
@@ -667,31 +670,40 @@ Resultado * comparaVetor(int *vet1, int tam1, int *vet2, int tam2, Resultado *re
 
       for (int j = 0; j < *tamR; j++){
         if (r.base == result[j].base){
-          result[j].qtd += 1;
           achou = 1;
-          printf("R = %d, %d\n", result[j].base, result[j].qtd); //tirar qtd aqui, deixar só no while
+          printf("R = %ld, %d\n", result[j].base, result[j].qtd); 
           break;
         }
       }
       if(achou == 0){
         if (*tamR >= size) {
+          Resultado *temp = (Resultado *)realloc(result, (size * 2) * sizeof(Resultado));
+          if (temp == NULL) {
+              free(result);
+              return NULL; // Falha ao realocar, libera memória
+          }
+          result = temp;
           size *= 2;
-          result = (Resultado *)realloc(result, size * sizeof(Resultado));
         }
         result[*tamR] = r;
-        printf("R = %d, %d\n", result[*tamR].base, result[*tamR].qtd);
+        printf("R = %ld, %d\n", result[*tamR].base, result[*tamR].qtd);
         *tamR += 1;
       }
     }
   }
-  
-   result = (Resultado *)realloc(result, (*tamR) * sizeof(Resultado)); // Final reallocation
-  
+  // Realocação final para ajustar ao tamanho correto
+  Resultado *temp = (Resultado *)realloc(result, (*tamR) * sizeof(Resultado));
+  if (temp != NULL) {
+      result = temp;
+  } else {
+      // Caso a realocação falhe, o array ainda é válido, mas não será reduzido
+  }
+
   return result;
 }
 
 
-int buscaBinaria(int *vet, int tamVet, int valor){
+int buscaBinaria(long int *vet, int tamVet, int valor){
   
   int inicio = 0;
   int fim = tamVet - 1;
