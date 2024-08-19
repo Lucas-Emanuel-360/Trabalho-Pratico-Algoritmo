@@ -370,6 +370,7 @@ int executarExperimento(){
   Resultado *resultado = NULL;
   long int *vet = NULL, *vet2 = NULL;
   int tam1, tam2;
+  int nessParaResult = 0; //exemplo
   long int *vetQlqr = NULL;
   int tamQlqr, tamR = 0; //colocar loop até EOF e ir incrementando
   int posicaoBloco = 3;
@@ -415,6 +416,8 @@ int executarExperimento(){
     int bloco = 0;
     posicaoBloco = 1;
     fseek(fileAME, 0, SEEK_SET);
+    
+          
     while(fscanf(fileAME, " %[^\n]", linha) != EOF){
 
       printf("\n\nestou no while, posicaobloco = %d\n\n", posicaoBloco);
@@ -444,6 +447,11 @@ int executarExperimento(){
         bloco = 0;
       }
     }
+
+    //exemplo
+    // nessParaResult = posicaoBloco - 2;
+    // final(resultado, nessParaResult);
+    
     //testando
     for (int i = 0; i < tamR; i++){
       printf("\n\nBase: %ld, Qtd: %d\n\n", resultado[i].base, resultado[i].qtd);
@@ -468,7 +476,7 @@ long int * pegaVetor(int posicao, int *tv)
   int atual = 0; //para saber em qual bloco de sequência o código está
   int divisoria = 0; //para diferenciar se a linha faz parte da sequencia ou se é a divisao entre blocos
   int add; //para adicionar bytes necessarios para saltar uma linha
-  long int bytes, bytes2; //quantidade de bytes que o ponteiro tem que "pular" para chegar no bloco escolhido
+  long int bytes; //quantidade de bytes que o ponteiro tem que "pular" para chegar no bloco escolhido
   int acabou = 0; //para controlar o while que passa pelo bloco escolhido e salva em vetor de int
   int cont = 0;
   int tam = 0;
@@ -476,6 +484,8 @@ long int * pegaVetor(int posicao, int *tv)
   // char blocoEscolhido[300];
   char * blocoChar; //vetor com o bloco escolhido em char
   blocoChar = (char *)calloc(1, sizeof(char));
+
+
 
 
 
@@ -526,6 +536,8 @@ long int * pegaVetor(int posicao, int *tv)
       }
     }
 
+
+
   fseek(fileAME, bytes, SEEK_SET);//garante que o ponteiro vá estar no começo da primeira linha do bloco solicitado (é meio que redundancia, dá pra tirar se quiser o.O)
 
   while(acabou != 1)
@@ -549,9 +561,10 @@ long int * pegaVetor(int posicao, int *tv)
         acabou = 1;
       }
     }
-
+  
   long int * blocoEscolhido; //vetor para armazenar, em ints, o bloco escolhido
   blocoEscolhido = (long int *)calloc(tam, sizeof(long int)); //aloca o tamanho para o vetor
+
 
   for(int i = 0; i < tam; i++)
     {
@@ -560,6 +573,7 @@ long int * pegaVetor(int posicao, int *tv)
 
 
   //imprimindo o vetor para verificar se esta correto
+  // printf("\nUHAAAA\n");
   printf("\nVetor buscado\n-> ");
   for(int i = 0; i < tam; i++)
     {
